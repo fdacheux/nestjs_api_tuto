@@ -37,3 +37,6 @@ lerna-debug.log*
 # git
 /.husky
 commitlint.config.ts
+
+# dev env 
+.env
