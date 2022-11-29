@@ -1,4 +1,4 @@
-import { Controller, Post, Req } from '@nestjs/common';
+import { Controller, Post, Body } from '@nestjs/common';
 import {
   ApiTags,
   ApiOperation,
@@ -8,7 +8,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
-import { Request } from 'express';
+import { IAuthDto } from './dto';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -22,8 +22,10 @@ export class AuthController {
       'Password must contain at least 8 chararcters, maximum 64 characters, at least one uppercase letter, one lowercase letter, one number and one special character',
   })
   @Post('signup')
-  signup(@Req() req: Request) {
-    console.log(req.body);
+  signup(@Body() dto: IAuthDto) {
+    console.log({
+      dto,
+    });
     return this.authService.signup();
   }
 
