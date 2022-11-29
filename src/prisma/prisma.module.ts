@@ -12,7 +12,7 @@ export class PrismaModule extends PrismaClient {
     super({
       datasources: {
         db: {
-          url: 'postgresql://fdacheux:OkinaYouStinkyBadStupidDog@localhost:5432/nestjs?schema=public',
+          url: 'postgresql://postgresUser:ImAPassword@localhost:5432/nestjs?schema=public',
         },
       },
     });

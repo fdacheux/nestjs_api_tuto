@@ -7,6 +7,6 @@ services:
     ports:
       - 5432:5432
     environment:
-      POSTGRES_USER: fdacheux
-      POSTGRES_PASSWORD: OkinaYouStinkyBadStupidDog
+      POSTGRES_USER: postgresUser
+      POSTGRES_PASSWORD: ImAPassword
       POSTGRES_DB: nestjs

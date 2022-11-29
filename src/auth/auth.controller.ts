@@ -8,7 +8,7 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
-import { IAuthDto } from './dto';
+import { AuthDto } from './dto';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -18,11 +18,10 @@ export class AuthController {
   @ApiOperation({ summary: 'Create user account' })
   @ApiCreatedResponse({ description: 'User successfully created' })
   @ApiBadRequestResponse({
-    description:
-      'Password must contain at least 8 chararcters, maximum 64 characters, at least one uppercase letter, one lowercase letter, one number and one special character',
+    description: 'email should not be empty / email must be an email',
   })
   @Post('signup')
-  signup(@Body() dto: IAuthDto) {
+  signup(@Body() dto: AuthDto) {
     console.log({
       dto,
     });
