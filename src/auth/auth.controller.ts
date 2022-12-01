@@ -1,4 +1,4 @@
-import { Controller, Post, Body, HttpCode } from '@nestjs/common';
+import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
 import {
   ApiTags,
   ApiOperation,
@@ -127,7 +127,7 @@ export class AuthController {
     },
   })
   @Post('signin')
-  @HttpCode(200)
+  @HttpCode(HttpStatus.OK)
   signin(@Body() dto: AuthDto) {
     return this.authService.signin(dto);
   }
