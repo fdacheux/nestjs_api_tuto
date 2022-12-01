@@ -16,12 +16,46 @@ export class AuthController {
   constructor(private authService: AuthService) {}
 
   @ApiOperation({ summary: 'Create user account' })
-  @ApiCreatedResponse({ description: 'User successfully created' })
+  @ApiCreatedResponse({
+    description: 'User successfully created',
+    schema: {
+      type: 'object',
+      properties: {
+        access_token: {
+          type: 'string',
+          example:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY2OTg4OTE4MiwiZXhwIjoxNjY5ODkwMDgyfQ.j0jK-K7NdomHZg4FLHSXu5t2CUgHZ0Cet5IAtDLq2fs',
+        },
+      },
+    },
+  })
   @ApiBadRequestResponse({
-    description: 'email should not be empty / email must be an email',
+    description: 'Email field empty or invalid input',
+    schema: {
+      type: 'object',
+      properties: {
+        statusCode: { type: 'integer', default: 400 },
+        message: {
+          type: 'array',
+          default: ['email should not be empty', 'email must be an email'],
+        },
+        error: { type: 'string', default: 'Bad request' },
+      },
+    },
   })
   @ApiForbiddenResponse({
-    description: 'Credentials taken',
+    description: 'Credentials already taken',
+    schema: {
+      type: 'object',
+      properties: {
+        statusCode: { type: 'integer', default: 403 },
+        message: {
+          type: 'string',
+          default: 'Credentials taken',
+        },
+        error: { type: 'string', default: 'Forbidden' },
+      },
+    },
   })
   @Post('signup')
   signup(@Body() dto: AuthDto) {
@@ -29,9 +63,32 @@ export class AuthController {
   }
 
   @ApiOperation({ summary: 'Log user' })
-  @ApiOkResponse({ description: 'Logged in' })
+  @ApiOkResponse({
+    description: 'Logged in',
+    schema: {
+      type: 'object',
+      properties: {
+        access_token: {
+          type: 'string',
+          example:
+            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY2OTg4OTE4MiwiZXhwIjoxNjY5ODkwMDgyfQ.j0jK-K7NdomHZg4FLHSXu5t2CUgHZ0Cet5IAtDLq2fs',
+        },
+      },
+    },
+  })
   @ApiForbiddenResponse({
-    description: 'Credentials incorrect',
+    description: "User's email or password is incorrect",
+    schema: {
+      type: 'object',
+      properties: {
+        statusCode: { type: 'integer', default: 403 },
+        message: {
+          type: 'string',
+          default: 'Credentials incorrect',
+        },
+        error: { type: 'string', default: 'Forbidden' },
+      },
+    },
   })
   @Post('signin')
   @HttpCode(200)
