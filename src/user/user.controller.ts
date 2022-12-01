@@ -1,10 +1,13 @@
-import { Controller, Get, Req, UseGuards } from '@nestjs/common';
+import { Controller, Get, UseGuards } from '@nestjs/common';
 import {
   ApiBearerAuth,
+  ApiOkResponse,
+  ApiOperation,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
-import { Request } from 'express';
+import { User } from '@prisma/client';
+import { GetUser } from 'src/auth/decorator';
 import { JwtGuard } from 'src/auth/guard';
 
 @ApiTags('users')
@@ -19,11 +22,26 @@ import { JwtGuard } from 'src/auth/guard';
     },
   },
 })
+@UseGuards(JwtGuard)
 @Controller('users')
 export class UserController {
-  @UseGuards(JwtGuard)
   @Get('me')
-  getMe(@Req() req: Request) {
-    return req.user;
+  @ApiOperation({ summary: 'Get a user info' })
+  @ApiOkResponse({
+    description: 'The user is authorized to access this route.',
+    schema: {
+      type: 'object',
+      properties: {
+        id: { type: 'integer', default: '0' },
+        createdAt: { type: 'string', format: 'date-time' },
+        updatedAt: { type: 'string', format: 'date-time' },
+        email: { type: 'string', format: 'email' },
+        firstName: { type: 'string', nullable: true },
+        lastName: { type: 'string', nullable: true },
+      },
+    },
+  })
+  getMe(@GetUser() user: User) {
+    return user;
   }
 }
