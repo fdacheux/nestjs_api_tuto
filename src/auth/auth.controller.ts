@@ -1,11 +1,11 @@
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, HttpCode } from '@nestjs/common';
 import {
   ApiTags,
   ApiOperation,
   ApiOkResponse,
   ApiCreatedResponse,
   ApiBadRequestResponse,
-  ApiUnauthorizedResponse,
+  ApiForbiddenResponse,
 } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto';
@@ -20,21 +20,22 @@ export class AuthController {
   @ApiBadRequestResponse({
     description: 'email should not be empty / email must be an email',
   })
+  @ApiForbiddenResponse({
+    description: 'Credentials taken',
+  })
   @Post('signup')
   signup(@Body() dto: AuthDto) {
-    console.log({
-      dto,
-    });
-    return this.authService.signup();
+    return this.authService.signup(dto);
   }
 
   @ApiOperation({ summary: 'Log user' })
   @ApiOkResponse({ description: 'Logged in' })
-  @ApiUnauthorizedResponse({
-    description: 'Invalid email address/password combination',
+  @ApiForbiddenResponse({
+    description: 'Credentials incorrect',
   })
   @Post('signin')
-  signin() {
-    return this.authService.signin();
+  @HttpCode(200)
+  signin(@Body() dto: AuthDto) {
+    return this.authService.signin(dto);
   }
 }

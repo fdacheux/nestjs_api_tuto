@@ -1,5 +1,4 @@
 import { Module, Global } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
 import { PrismaService } from './prisma.service';
 
 @Global()
@@ -7,14 +6,4 @@ import { PrismaService } from './prisma.service';
   providers: [PrismaService],
   exports: [PrismaService],
 })
-export class PrismaModule extends PrismaClient {
-  constructor() {
-    super({
-      datasources: {
-        db: {
-          url: 'postgresql://postgresUser:ImAPassword@localhost:5432/nestjs?schema=public',
-        },
-      },
-    });
-  }
-}
+export class PrismaModule {}
