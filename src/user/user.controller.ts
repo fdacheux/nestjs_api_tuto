@@ -1,11 +1,11 @@
 import { Controller, Get, Req, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 import {
   ApiBearerAuth,
   ApiTags,
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { Request } from 'express';
+import { JwtGuard } from 'src/auth/guard';
 
 @ApiTags('users')
 @ApiBearerAuth()
@@ -21,12 +21,9 @@ import { Request } from 'express';
 })
 @Controller('users')
 export class UserController {
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtGuard)
   @Get('me')
-  getMe(@Req() req: Request): string {
-    console.log({
-      user: req.user,
-    });
-    return 'User info';
+  getMe(@Req() req: Request) {
+    return req.user;
   }
 }
