@@ -8,15 +8,18 @@ import {
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
+  ApiExtraModels,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
   ApiUnauthorizedResponse,
+  getSchemaPath,
 } from '@nestjs/swagger';
 import { User } from '@prisma/client';
 import { GetUser } from '../auth/decorator';
 import { JwtGuard } from '../auth/guard';
 import { EditUserDto } from './dto';
+import { UserEntity } from './entities';
 import { UserService } from './user.service';
 
 @ApiTags('users')
@@ -45,38 +48,12 @@ export class UserController {
   @ApiOperation({
     summary: 'Get a user info',
   })
+  @ApiExtraModels(UserEntity)
   @ApiOkResponse({
     description: 'The user is authorized to access this route.',
     schema: {
       type: 'object',
-      properties: {
-        id: {
-          type: 'number',
-          example: '1',
-        },
-        createdAt: {
-          type: 'string',
-          format: 'date-time',
-        },
-        updatedAt: {
-          type: 'string',
-          format: 'date-time',
-        },
-        email: {
-          type: 'string',
-          format: 'email',
-        },
-        firstName: {
-          type: 'string',
-          nullable: true,
-          example: 'Avery',
-        },
-        lastName: {
-          type: 'string',
-          nullable: true,
-          example: 'Bullock',
-        },
-      },
+      $ref: getSchemaPath(UserEntity),
     },
   })
   getMe(@GetUser() user: User) {
@@ -91,35 +68,7 @@ export class UserController {
       'The user has successfully updated his/her informations.',
     schema: {
       type: 'object',
-      properties: {
-        id: {
-          type: 'number',
-          example: '1',
-        },
-        createdAt: {
-          type: 'string',
-          format: 'date-time',
-        },
-        updatedAt: {
-          type: 'string',
-          format: 'date-time',
-        },
-        email: {
-          type: 'string',
-          format: 'email',
-          nullable: true,
-        },
-        firstName: {
-          type: 'string',
-          nullable: true,
-          example: 'Patrick',
-        },
-        lastName: {
-          type: 'string',
-          nullable: true,
-          example: 'Bullock',
-        },
-      },
+      $ref: getSchemaPath(UserEntity),
     },
   })
   @ApiBadRequestResponse({

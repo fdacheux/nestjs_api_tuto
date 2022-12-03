@@ -23,7 +23,7 @@ import { GetUser } from '../auth/decorator';
 import { JwtGuard } from '../auth/guard';
 import { BookmarkService } from './bookmark.service';
 import { CreateBookmarkDto, EditBookmarkDto } from './dto';
-import { Bookmark } from './entities/bookmark.entity';
+import { BookmarkEntity } from './entities';
 
 @ApiTags('bookmarks')
 @ApiBearerAuth()
@@ -51,13 +51,13 @@ export class BookmarkController {
   @ApiOperation({
     summary: 'Get all bookmarks for that user',
   })
-  @ApiExtraModels(Bookmark)
+  @ApiExtraModels(BookmarkEntity)
   @ApiOkResponse({
     description: 'Successfully get all the bookmarks for that user',
     schema: {
       type: 'array',
       items: {
-        $ref: getSchemaPath(Bookmark),
+        $ref: getSchemaPath(BookmarkEntity),
       },
     },
   })
@@ -80,17 +80,7 @@ export class BookmarkController {
   @ApiCreatedResponse({
     description: 'Bookmark successfully created',
     schema: {
-      type: 'object',
-      properties: {
-        id: { type: 'number', example: '1' },
-        createdAt: { type: 'string', format: 'date-time' },
-        updatedAt: { type: 'string', format: 'date-time' },
-        title: { type: 'string' },
-        link: {
-          type: 'string',
-          example: 'http://my-awesome-url.com',
-        },
-      },
+      $ref: getSchemaPath(BookmarkEntity),
     },
   })
   createBookmark(
