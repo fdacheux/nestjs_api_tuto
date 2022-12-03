@@ -10,6 +10,7 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiCreatedResponse,
   ApiExtraModels,
@@ -81,6 +82,24 @@ export class BookmarkController {
     description: 'Bookmark successfully created',
     schema: {
       $ref: getSchemaPath(BookmarkEntity),
+    },
+  })
+  @ApiBadRequestResponse({
+    description:
+      'Title, description or link is not a string or/and title or link is empty',
+    schema: {
+      type: 'object',
+      properties: {
+        statusCode: { type: 'integer', default: 400 },
+        message: {
+          type: 'array',
+          example: [
+            'title should not be an empty',
+            'description must be a string',
+          ],
+        },
+        error: { type: 'string', default: 'Bad request' },
+      },
     },
   })
   createBookmark(
