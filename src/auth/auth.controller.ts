@@ -1,4 +1,10 @@
-import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  HttpCode,
+  HttpStatus,
+} from '@nestjs/common';
 import {
   ApiTags,
   ApiOperation,
@@ -96,16 +102,11 @@ export class AuthController {
         statusCode: { type: 'integer', default: 400 },
         message: {
           type: 'array',
-          default: [
+          example: [
             'email should not be empty',
             'email must be an email',
             'password should not be empty',
             'password  must be a string',
-          ],
-          examples: [
-            ['email should not be empty'],
-            ['email must be an email, password should not be empty'],
-            ['password  must be a string'],
           ],
         },
         error: { type: 'string', default: 'Bad request' },

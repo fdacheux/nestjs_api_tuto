@@ -6,6 +6,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import {
+  ApiBadRequestResponse,
   ApiBearerAuth,
   ApiOkResponse,
   ApiOperation,
@@ -50,8 +51,8 @@ export class UserController {
       type: 'object',
       properties: {
         id: {
-          type: 'integer',
-          default: '0',
+          type: 'number',
+          example: '1',
         },
         createdAt: {
           type: 'string',
@@ -68,10 +69,12 @@ export class UserController {
         firstName: {
           type: 'string',
           nullable: true,
+          example: 'Avery',
         },
         lastName: {
           type: 'string',
           nullable: true,
+          example: 'Bullock',
         },
       },
     },
@@ -90,8 +93,8 @@ export class UserController {
       type: 'object',
       properties: {
         id: {
-          type: 'integer',
-          default: '0',
+          type: 'number',
+          example: '1',
         },
         createdAt: {
           type: 'string',
@@ -109,11 +112,31 @@ export class UserController {
         firstName: {
           type: 'string',
           nullable: true,
+          example: 'Patrick',
         },
         lastName: {
           type: 'string',
           nullable: true,
+          example: 'Bullock',
         },
+      },
+    },
+  })
+  @ApiBadRequestResponse({
+    description:
+      'Email format invalid or one of the field is not a string',
+    schema: {
+      type: 'object',
+      properties: {
+        statusCode: { type: 'integer', default: 400 },
+        message: {
+          type: 'array',
+          example: [
+            'email must be an email',
+            'lastName must be a string',
+          ],
+        },
+        error: { type: 'string', default: 'Bad request' },
       },
     },
   })

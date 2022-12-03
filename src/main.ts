@@ -11,7 +11,6 @@ async function bootstrap() {
     .setTitle('BookmarkApi')
     .setDescription('Nestjs Bookmark tuto project API')
     .setVersion('1.0')
-    .addTag('bookmark')
     .addBearerAuth()
     .build();
   const document = SwaggerModule.createDocument(app, options);
