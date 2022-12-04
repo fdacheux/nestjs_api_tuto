@@ -8,65 +8,48 @@ import {
   Body,
   UseGuards,
   ParseIntPipe,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
   ApiBearerAuth,
   ApiCreatedResponse,
   ApiExtraModels,
+  ApiForbiddenResponse,
+  ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
   ApiUnauthorizedResponse,
-  getSchemaPath,
+  ApiNoContentResponse,
 } from '@nestjs/swagger';
 import { GetUser } from '../auth/decorator';
 import { JwtGuard } from '../auth/guard';
+import { BookmarkApi } from './api/bookmark.api';
 import { BookmarkService } from './bookmark.service';
 import { CreateBookmarkDto, EditBookmarkDto } from './dto';
 import { BookmarkEntity } from './entities';
 
 @ApiTags('bookmarks')
 @ApiBearerAuth()
-@ApiUnauthorizedResponse({
-  description: 'User is not authorize to access this route',
-  schema: {
-    type: 'object',
-    properties: {
-      statusCode: {
-        type: 'integer',
-        default: 401,
-      },
-      message: {
-        type: 'string',
-        default: 'Unauthorized',
-      },
-    },
-  },
-})
+@ApiUnauthorizedResponse(BookmarkApi.global.unauthorizedResponse)
 @UseGuards(JwtGuard)
 @Controller('bookmarks')
 export class BookmarkController {
   constructor(private bookmarkService: BookmarkService) {}
   @Get()
-  @ApiOperation({
-    summary: 'Get all bookmarks for that user',
-  })
+  @ApiOperation(BookmarkApi.getBookmarks.operation)
   @ApiExtraModels(BookmarkEntity)
-  @ApiOkResponse({
-    description: 'Successfully get all the bookmarks for that user',
-    schema: {
-      type: 'array',
-      items: {
-        $ref: getSchemaPath(BookmarkEntity),
-      },
-    },
-  })
+  @ApiOkResponse(BookmarkApi.getBookmarks.response.okResponse)
   getBookmarks(@GetUser('id') userId: number) {
     return this.bookmarkService.getBookmarks(userId);
   }
 
   @Get(':id')
+  @ApiOperation(BookmarkApi.getBookmarkById.operation)
+  @ApiOkResponse(BookmarkApi.getBookmarkById.response.okResponse)
+  @ApiNotFoundResponse(BookmarkApi.getBookmarkById.response.notFound)
   getBookmarkById(
     @GetUser('id') userId: number,
     @Param('id', ParseIntPipe) bookmarkId: number,
@@ -75,33 +58,11 @@ export class BookmarkController {
   }
 
   @Post()
-  @ApiOperation({
-    summary: 'Create a bookmark',
-  })
-  @ApiCreatedResponse({
-    description: 'Bookmark successfully created',
-    schema: {
-      $ref: getSchemaPath(BookmarkEntity),
-    },
-  })
-  @ApiBadRequestResponse({
-    description:
-      'Title, description or link is not a string or/and title or link is empty',
-    schema: {
-      type: 'object',
-      properties: {
-        statusCode: { type: 'integer', default: 400 },
-        message: {
-          type: 'array',
-          example: [
-            'title should not be an empty',
-            'description must be a string',
-          ],
-        },
-        error: { type: 'string', default: 'Bad request' },
-      },
-    },
-  })
+  @ApiOperation(BookmarkApi.createBookmark.operation)
+  @ApiCreatedResponse(BookmarkApi.createBookmark.response.created)
+  @ApiBadRequestResponse(
+    BookmarkApi.createBookmark.response.badRequest,
+  )
   createBookmark(
     @GetUser('id') userId: number,
     @Body() dto: CreateBookmarkDto,
@@ -110,6 +71,15 @@ export class BookmarkController {
   }
 
   @Patch(':id')
+  @ApiOperation(BookmarkApi.editBookmarkById.operation)
+  @ApiOkResponse(BookmarkApi.editBookmarkById.response.okResponse)
+  @ApiBadRequestResponse(
+    BookmarkApi.editBookmarkById.response.badRequest,
+  )
+  @ApiForbiddenResponse(
+    BookmarkApi.editBookmarkById.response.forbiddenResponse,
+  )
+  @ApiNotFoundResponse(BookmarkApi.editBookmarkById.response.notFound)
   editBookmarkById(
     @GetUser('id') userId: number,
     @Param('id', ParseIntPipe) bookmarkId: number,
@@ -122,7 +92,18 @@ export class BookmarkController {
     );
   }
 
+  @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
+  @ApiOperation(BookmarkApi.deleteBookmarkById.operation)
+  @ApiNoContentResponse(
+    BookmarkApi.deleteBookmarkById.response.noContentResponse,
+  )
+  @ApiForbiddenResponse(
+    BookmarkApi.deleteBookmarkById.response.forbiddenResponse,
+  )
+  @ApiNotFoundResponse(
+    BookmarkApi.deleteBookmarkById.response.notFound,
+  )
   deleteBookmarkById(
     @GetUser('id') userId: number,
     @Param('id', ParseIntPipe) bookmarkId: number,

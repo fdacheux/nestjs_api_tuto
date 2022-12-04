@@ -13,6 +13,7 @@ import {
   ApiBadRequestResponse,
   ApiForbiddenResponse,
 } from '@nestjs/swagger';
+import { AuthApi } from './api/auth.api';
 import { AuthService } from './auth.service';
 import { AuthDto } from './dto';
 
@@ -21,112 +22,19 @@ import { AuthDto } from './dto';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @ApiOperation({ summary: 'Create user account' })
-  @ApiCreatedResponse({
-    description: 'User successfully created',
-    schema: {
-      type: 'object',
-      properties: {
-        access_token: {
-          type: 'string',
-          example:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY2OTg4OTE4MiwiZXhwIjoxNjY5ODkwMDgyfQ.j0jK-K7NdomHZg4FLHSXu5t2CUgHZ0Cet5IAtDLq2fs',
-        },
-      },
-    },
-  })
-  @ApiBadRequestResponse({
-    description:
-      'Email or/and password field(s) empty OR/AND invalid email or/and password format : will return an array with the appropriate informations',
-    schema: {
-      type: 'object',
-      properties: {
-        statusCode: { type: 'integer', default: 400 },
-        message: {
-          type: 'array',
-          default: [
-            'email should not be empty',
-            'email must be an email',
-            'password should not be empty',
-            'password  must be a string',
-          ],
-          examples: [
-            ['email should not be empty'],
-            ['email must be an email, password should not be empty'],
-            ['password  must be a string'],
-          ],
-        },
-        error: { type: 'string', default: 'Bad request' },
-      },
-    },
-  })
-  @ApiForbiddenResponse({
-    description: 'Credentials already taken',
-    schema: {
-      type: 'object',
-      properties: {
-        statusCode: { type: 'integer', default: 403 },
-        message: {
-          type: 'string',
-          default: 'Credentials taken',
-        },
-        error: { type: 'string', default: 'Forbidden' },
-      },
-    },
-  })
+  @ApiOperation(AuthApi.signUp.operation)
+  @ApiCreatedResponse(AuthApi.signUp.response.createdResponse)
+  @ApiBadRequestResponse(AuthApi.signUp.response.badRequestResponse)
+  @ApiForbiddenResponse(AuthApi.signUp.response.forbiddenResponse)
   @Post('signup')
   signup(@Body() dto: AuthDto) {
     return this.authService.signup(dto);
   }
 
-  @ApiOperation({ summary: 'Log user' })
-  @ApiOkResponse({
-    description: 'Logged in',
-    schema: {
-      type: 'object',
-      properties: {
-        access_token: {
-          type: 'string',
-          example:
-            'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOjEsImVtYWlsIjoidGVzdEB0ZXN0LmNvbSIsImlhdCI6MTY2OTg4OTE4MiwiZXhwIjoxNjY5ODkwMDgyfQ.j0jK-K7NdomHZg4FLHSXu5t2CUgHZ0Cet5IAtDLq2fs',
-        },
-      },
-    },
-  })
-  @ApiBadRequestResponse({
-    description:
-      'Email or/and password field(s) empty OR/AND invalid email or/and password format : will return an array with the appropriate informations',
-    schema: {
-      type: 'object',
-      properties: {
-        statusCode: { type: 'integer', default: 400 },
-        message: {
-          type: 'array',
-          example: [
-            'email should not be empty',
-            'email must be an email',
-            'password should not be empty',
-            'password  must be a string',
-          ],
-        },
-        error: { type: 'string', default: 'Bad request' },
-      },
-    },
-  })
-  @ApiForbiddenResponse({
-    description: "User's email or password is incorrect",
-    schema: {
-      type: 'object',
-      properties: {
-        statusCode: { type: 'integer', default: 403 },
-        message: {
-          type: 'string',
-          default: 'Credentials incorrect',
-        },
-        error: { type: 'string', default: 'Forbidden' },
-      },
-    },
-  })
+  @ApiOperation(AuthApi.signin.operation)
+  @ApiOkResponse(AuthApi.signin.response.okResponse)
+  @ApiBadRequestResponse(AuthApi.signin.response.badRequestResponse)
+  @ApiForbiddenResponse(AuthApi.signin.response.forbiddenResponse)
   @Post('signin')
   @HttpCode(HttpStatus.OK)
   signin(@Body() dto: AuthDto) {

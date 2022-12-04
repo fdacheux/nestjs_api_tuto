@@ -40,3 +40,4 @@ commitlint.config.ts
 
 # dev env 
 .env
+.env.test

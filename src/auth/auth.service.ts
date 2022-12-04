@@ -50,9 +50,13 @@ export class AuthService {
     if (!user) throw new ForbiddenException('Credentials incorrect');
 
     //compare passwords
-    const passwordMatches = await argon.verify(user.hash, dto.password);
+    const passwordMatches = await argon.verify(
+      user.hash,
+      dto.password,
+    );
     //if passwords incorrect, throw err
-    if (!passwordMatches) throw new ForbiddenException('Credentials incorrect');
+    if (!passwordMatches)
+      throw new ForbiddenException('Credentials incorrect');
 
     //send back token
     return this.signToken(user.id, user.email);
