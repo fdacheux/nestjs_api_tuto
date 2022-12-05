@@ -127,7 +127,6 @@ describe('App e2e', () => {
           .expectBodyContains(dto.email);
       });
     });
-    describe('Delete user', () => {});
   });
 
   describe('Bookmarks', () => {
@@ -235,6 +234,26 @@ describe('App e2e', () => {
           })
           .expectStatus(200)
           .expectJsonLength(0);
+      });
+    });
+    describe('Delete user', () => {
+      it("Should delete the user's account", () => {
+        return pactum
+          .spec()
+          .delete('/users')
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
+          })
+          .expectStatus(204);
+      });
+      it('Should returns a 404', () => {
+        return pactum
+          .spec()
+          .get('/users/me')
+          .withHeaders({
+            Authorization: 'Bearer $S{userAt}',
+          })
+          .expectStatus(404);
       });
     });
   });
