@@ -246,14 +246,15 @@ describe('App e2e', () => {
           })
           .expectStatus(204);
       });
-      it('Should returns a 404', () => {
+      it('Should returns a 401', () => {
         return pactum
           .spec()
           .get('/users/me')
           .withHeaders({
             Authorization: 'Bearer $S{userAt}',
           })
-          .expectStatus(404);
+          .expectStatus(401)
+          .inspect();
       });
     });
   });
