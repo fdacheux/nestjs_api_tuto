@@ -3,7 +3,7 @@ import { Test } from '@nestjs/testing';
 import * as pactum from 'pactum';
 import { PrismaService } from '../src/prisma/prisma.service';
 import { AppModule } from '../src/app.module';
-import { AuthDto } from 'src/auth/dto';
+import { AuthDto, SignupDto } from 'src/auth/dto';
 import { EditUserDto } from 'src/user/dto';
 import { CreateBookmarkDto, EditBookmarkDto } from 'src/bookmark/dto';
 
@@ -32,7 +32,12 @@ describe('App e2e', () => {
   describe('Auth', () => {
     const dto: AuthDto = {
       email: 'test@test.com',
-      password: '123OkinaEstUnGrosTas',
+      password: '123OkinaWaf',
+    };
+    const signupDto: SignupDto = {
+      email: 'test@test.com',
+      password: '123OkinaWaf',
+      username: 'Grokiwoof',
     };
     describe('Signup', () => {
       it('Should throw if email empty', () => {
@@ -40,7 +45,7 @@ describe('App e2e', () => {
           .spec()
           .post('/auth/signup')
           .withBody({
-            password: dto.password,
+            password: signupDto.password,
           })
           .expectStatus(400);
       });
@@ -49,7 +54,7 @@ describe('App e2e', () => {
           .spec()
           .post('/auth/signup')
           .withBody({
-            email: dto.email,
+            email: signupDto.email,
           })
           .expectStatus(400);
       });
@@ -60,7 +65,7 @@ describe('App e2e', () => {
         return pactum
           .spec()
           .post('/auth/signup')
-          .withBody(dto)
+          .withBody(signupDto)
           .expectStatus(201);
       });
     });

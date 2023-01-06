@@ -15,7 +15,7 @@ import {
 } from '@nestjs/swagger';
 import { AuthApi } from './api/auth.api';
 import { AuthService } from './auth.service';
-import { AuthDto } from './dto';
+import { AuthDto, SignupDto } from './dto';
 
 @ApiTags('auth')
 @Controller('auth')
@@ -27,7 +27,7 @@ export class AuthController {
   @ApiBadRequestResponse(AuthApi.signUp.response.badRequestResponse)
   @ApiForbiddenResponse(AuthApi.signUp.response.forbiddenResponse)
   @Post('signup')
-  signup(@Body() dto: AuthDto) {
+  signup(@Body() dto: SignupDto) {
     return this.authService.signup(dto);
   }
 

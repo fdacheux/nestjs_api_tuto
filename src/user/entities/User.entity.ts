@@ -19,6 +19,9 @@ export class UserEntity {
   @ApiProperty({ format: 'email' })
   email: string;
 
+  @ApiProperty({ example: 'professorX' })
+  username: string;
+
   @ApiProperty({ nullable: true, example: 'Avery' })
   firstName: string;
 

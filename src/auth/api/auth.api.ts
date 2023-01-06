@@ -21,7 +21,7 @@ export const AuthApi = {
       },
       badRequestResponse: {
         description:
-          'Email or/and password field(s) empty OR/AND invalid email or/and password format : will return an array with the appropriate informations',
+          'Email, username or/and password field(s) empty OR/AND invalid email, username or/and password format : will return an array with the appropriate informations',
         schema: {
           type: 'object',
           properties: {

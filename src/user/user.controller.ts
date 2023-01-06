@@ -12,6 +12,7 @@ import {
   ApiBadRequestResponse,
   ApiBearerAuth,
   ApiExtraModels,
+  ApiForbiddenResponse,
   ApiNoContentResponse,
   ApiOkResponse,
   ApiOperation,
@@ -44,6 +45,7 @@ export class UserController {
   @ApiOperation(UserApi.editUser.operation)
   @ApiOkResponse(UserApi.editUser.response.okResponse)
   @ApiBadRequestResponse(UserApi.editUser.response.badRequestResponse)
+  @ApiForbiddenResponse(UserApi.editUser.response.forbiddenResponse)
   editUser(
     @GetUser('id')
     userId: number,

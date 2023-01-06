@@ -69,6 +69,20 @@ export const UserApi = {
           },
         },
       },
+      forbiddenResponse: {
+        description: 'Credentials already taken',
+        schema: {
+          type: 'object',
+          properties: {
+            statusCode: { type: 'integer', default: 403 },
+            message: {
+              type: 'string',
+              default: 'Credentials taken',
+            },
+            error: { type: 'string', default: 'Forbidden' },
+          },
+        },
+      },
     },
   },
 
