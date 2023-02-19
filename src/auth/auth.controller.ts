@@ -15,7 +15,7 @@ import {
 } from '@nestjs/swagger';
 import { AuthApi } from './api/auth.api';
 import { AuthService } from './auth.service';
-import { AuthDto, SignupDto } from './dto';
+import { AuthDto, SignupDto } from './dto/auth.dto';
 
 @ApiTags('auth')
 @Controller('auth')

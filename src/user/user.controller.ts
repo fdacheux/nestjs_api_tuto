@@ -20,11 +20,11 @@ import {
   ApiUnauthorizedResponse,
 } from '@nestjs/swagger';
 import { User } from '@prisma/client';
-import { GetUser } from '../auth/decorator';
-import { JwtGuard } from '../auth/guard';
+import { GetUser } from 'src/auth/decorator/get-user.decorator';
+import { JwtGuard } from 'src/auth/guard/jwt.guard';
 import { UserApi } from './api/user.api';
-import { EditUserDto } from './dto';
-import { UserEntity } from './entities';
+import { EditUserDto } from './dto/edit-user.dto';
+import { UserEntity } from './entities/tuser.entity';
 import { UserService } from './user.service';
 
 @ApiTags('users')

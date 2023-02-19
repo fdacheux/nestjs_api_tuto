@@ -1,5 +1,5 @@
 import { getSchemaPath } from '@nestjs/swagger';
-import { UserEntity } from '../entities';
+import { UserEntity } from '../entities/tuser.entity';
 
 export const UserApi = {
   global: {

@@ -1,15 +1,15 @@
 import {
-  Controller,
-  Get,
-  Post,
-  Patch,
-  Delete,
-  Param,
   Body,
-  UseGuards,
-  ParseIntPipe,
+  Controller,
+  Delete,
+  Get,
   HttpCode,
   HttpStatus,
+  Param,
+  ParseIntPipe,
+  Patch,
+  Post,
+  UseGuards,
 } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
@@ -17,19 +17,20 @@ import {
   ApiCreatedResponse,
   ApiExtraModels,
   ApiForbiddenResponse,
+  ApiNoContentResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
   ApiOperation,
   ApiTags,
   ApiUnauthorizedResponse,
-  ApiNoContentResponse,
 } from '@nestjs/swagger';
-import { GetUser } from '../auth/decorator';
-import { JwtGuard } from '../auth/guard';
+import { GetUser } from 'src/auth/decorator/get-user.decorator';
+import { JwtGuard } from 'src/auth/guard/jwt.guard';
 import { BookmarkApi } from './api/bookmark.api';
 import { BookmarkService } from './bookmark.service';
-import { CreateBookmarkDto, EditBookmarkDto } from './dto';
-import { BookmarkEntity } from './entities';
+import { CreateBookmarkDto } from './dto/create-bookmark.dto';
+import { EditBookmarkDto } from './dto/edit-bookmark.dto';
+import { BookmarkEntity } from './entities/bookmark.entity';
 
 @ApiTags('bookmarks')
 @ApiBearerAuth()

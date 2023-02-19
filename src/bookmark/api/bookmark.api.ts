@@ -1,5 +1,5 @@
 import { getSchemaPath } from '@nestjs/swagger';
-import { BookmarkEntity } from '../entities';
+import { BookmarkEntity } from '../entities/bookmark.entity';
 
 export const BookmarkApi = {
   global: {

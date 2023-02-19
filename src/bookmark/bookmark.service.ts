@@ -5,7 +5,8 @@ import {
 } from '@nestjs/common';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
 import { PrismaService } from '../prisma/prisma.service';
-import { CreateBookmarkDto, EditBookmarkDto } from './dto';
+import { CreateBookmarkDto } from './dto/create-bookmark.dto';
+import { EditBookmarkDto } from './dto/edit-bookmark.dto';
 
 @Injectable()
 export class BookmarkService {
